@@ -1,0 +1,85 @@
+//DESC BACK littlec-datahouse
+syntax = "proto3";
+package boss.datahouse;
+
+
+import "common/base.proto";
+import "common/enum.proto";
+import "common/errcode.proto";
+
+
+option java_multiple_files = true;
+option java_package = "com.fingo.littlec.proto.boss.datahouse";
+option java_outer_classname = "RecommendProduct";
+
+
+
+//PO未完成采購單列表
+message RecommendProductListReq{
+    //国家
+    string country = 1;
+    //商品类目id
+    string cate_id = 2;
+    //商品标题
+    string product_title = 3;
+    common.base.Pagination page = 4;
+}
+
+message RecommendProductListResp {
+    common.base.ErrorMessage ret = 1;       //返回值
+    repeated RecommendProductInfo list = 2;      //列表信息
+    int32 totalNum = 3;     //总数
+}
+
+message RecommendProductInfo {
+    //商品id
+    string product_id = 1;
+    //商品标题
+    string product_title = 2;
+    //商品图片
+    string product_cover = 3;
+    //手动干预值
+    uint32 manua_intervention_value = 4;
+    //sort值
+    string sort_value = 5;
+    //昨日数据
+    RecommendProductData yesterday_data = 6;
+    //累计数据
+    RecommendProductData cumulative_data = 7;
+    //国家
+    string country = 8;
+}
+
+message RecommendProductData {
+    //转化率
+    string conversion_rate = 1;
+    //点击率
+    string click_rate = 2;
+    //曝光数
+    string exposure_count = 3;
+    //销量
+    string sales_volume = 4;
+}
+
+message UpdateManuaInterventionValueReq {
+    //商品id
+    string product_id = 1;
+    //国家
+    string country = 2;
+    //手动干预值
+    uint32 manua_intervention_value = 3;
+}
+
+message UpdateManuaInterventionValueResp {
+    common.base.ErrorMessage ret = 1;       //返回值
+}
+
+service RecommendProductBossService {
+
+    //推荐商品列表
+    rpc RecommendProductList(RecommendProductListReq) returns (RecommendProductListResp);
+
+    //修改商品干预值
+    rpc UpdateManuaInterventionValue(UpdateManuaInterventionValueReq) returns (UpdateManuaInterventionValueResp);
+
+}

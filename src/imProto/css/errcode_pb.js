@@ -1,0 +1,68 @@
+// source: css/errcode.proto
+/**
+ * @fileoverview
+ * @enhanceable
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
+ * @public
+ */
+// GENERATED CODE -- DO NOT EDIT!
+
+var jspb = require('google-protobuf');
+var goog = jspb;
+var global = Function('return this')();
+
+goog.exportSymbol('proto.css.errcode.ErrorCode', null, global);
+/**
+ * @enum {number}
+ */
+proto.css.errcode.ErrorCode = {
+  OK: 0,
+  SERVER_INNER_ERROR: -1,
+  SUCCESS: 1,
+  HMS_DATABASE_ERROR: 2,
+  HMS_SESSION_NOT_EXIST: 3,
+  HMS_MESSAGE_STORE_ERROR: 4,
+  HMS_ERROR_RETRACT_MESSAGE: 5,
+  HMS_INNER_ERROR: 6,
+  HMS_MESSAGE_NO_ALL_REMOVED: 7,
+  HMS_PARAM_FORMAT_ERROR: 8,
+  HMS_GUID_NULL: 9,
+  USER_NOT_LOGIN: 100,
+  SESSION_STATUS_ERROR: 101,
+  CHAT_FROM_IS_EMPTY: 201,
+  CHAT_RECEIVER_NOT_EXIST: 202,
+  CHAT_MESSAGE_SAVE_FAILED: 203,
+  CHAT_BUNDLE_BROKEN: 204,
+  PUSH_BUNDLEID_EMPYT: 303,
+  PUSH_CREATE_CRTIFICATE_FAILED: 304,
+  PUSH_DELETE_CRTIFICATE_FAILED: 305,
+  PUSH_CLEAR_TOKEN_FAILED: 306,
+  PUSH_SET_TOKEN_FAILED: 307,
+  PUSH_SET_BADGE_FAILED: 308,
+  CONNECTOR_USER_ALREADY_LOGIN: 401,
+  CSS_USER_ID_NULL: 500,
+  CSS_USER_COUNTRY_CODE_NULL: 501,
+  CSS_USER_LANGUAGE_NULL: 502,
+  CSS_CS_OFFLINE: 503,
+  CSS_NO_USABLE_CS: 504,
+  CSS_BUNDLE_NOT_EXISTS: 505,
+  CSS_BUNDLE_FAIL: 506,
+  CSS_BUNDLE_OVERDUE: 507,
+  CSS_FAQ_NOT_EXISTS: 508,
+  CSS_LANGUAGE_NOT_SPECIFIED: 509,
+  CSS_CS_ID_NULL: 510,
+  CSS_SERVICE_STATUS_NULL: 511,
+  CSS_ILLEGAL_STATUS: 512,
+  CSS_CS_NOT_EXISTS: 513,
+  CSS_NOT_WORKING_HOURS: 514,
+  CSS_NAME_NULL: 515,
+  CSS_MOBILE_NULL: 516,
+  MC_USER_ID_AND_DEVICE_ID_ALL_NULL: 601,
+  MC_DEVICE_ID_NULL: 602,
+  MC_USER_ID_NULL: 603,
+  MC_ACK_FAIL: 604,
+  CM_PUSH_TIME_NULL: 605
+};
+
+goog.object.extend(exports, proto.css.errcode);

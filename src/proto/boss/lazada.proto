@@ -1,0 +1,147 @@
+//DESC BACK littlec-product
+syntax = "proto3";
+package boss.lazada;
+
+
+import "common/base.proto";
+import "common/enum.proto";
+
+
+option java_multiple_files = true;
+option java_package = "com.fingo.littlec.proto.boss.lazada";
+option java_outer_classname = "Lazada";
+
+
+message ListProductReq {
+    common.base.Pagination page = 1; //分页信息
+    int32 status = 2; // 状态 0 全部 1 待发布 2 已发布
+    string fingo_product_id = 3; // Fingo 商品ID
+    string fingo_sku_id = 4; // Fingo sku ID
+    string fingo_sku_code = 5; // Fingo sku code
+    string fingo_product_name = 6; // Fingo sku code
+    string fingo_cate_id = 7; //Fingo 类目id
+    string lazada_cate_id = 8; //Lazada 类目id
+    string country_code = 9; //国家简码
+    int32 publish_success = 10; // 是否发布成功 1 发布成功 2 发布失败
+    int32 fingo_status = 11; // Fingo状态 1 上架 2下架
+    int32 lazada_status = 12; // Lazada状态 1 上架 2下架
+    string create_time = 13; //上新 , 用时间戳
+    string supplier_id = 14; //供应商id 或 名称
+}
+
+message ListProductResp {
+    message ProductInfo {
+        message ShopInfo {
+            int64 seller_id = 1; // 店铺ID
+            string name = 2; // 店铺名称
+        }
+        string id = 1; // 主键
+        string product_id = 2; //商品spu id
+        string title = 3; //商品标题
+        string spu_cover = 4; //商品spu图
+        int32 fingo_status = 5; // Fingo状态 1 上架 2下架
+        int32 status = 6; // 状态 1 待发布 2 已发布
+        repeated string fail_reason = 14; // 失败原因
+        string fingo_category = 7;// Fingo类目路径
+        string lazada_category = 8;// Lazada类目路径
+        string sale_country = 9;// 销售国家
+        repeated ShopInfo shopInfo = 10; // 销售店铺
+        string supplier_name = 11; // 供应商
+        string publish_time = 12; // 上新时间
+        string update_time = 13; // 更新时间
+    }
+    common.base.ErrorMessage ret = 1;
+    repeated ProductInfo product_info = 2; // 商品列表
+    uint32 total = 3; //商品结果总数
+}
+
+message PublishProductReq {
+    repeated string seller_id = 1; // 销售店铺ID列表
+    repeated string country_code = 2; // 销售国家编码列表
+    string product_id = 3; // 商品ID
+
+}
+message PublishProductResp {
+    common.base.ErrorMessage ret = 1;
+}
+
+message UpdateSkuReq {
+    message SkuInfo {
+        string country_code = 1; // 国家编码
+        string sku_id = 2; // SKU ID
+        string price = 3; // 销售价
+        string active_price = 4; // 活动价
+        int64 active_start_time = 5; // 活动开始时间 时间戳
+        int64 active_end_time = 6; // 活动结束时间 时间戳
+    }
+    string product_id = 1; // 商品ID
+    repeated SkuInfo sku_info = 2; // SKU列表
+}
+message UpdateSkuResp {
+    common.base.ErrorMessage ret = 1;
+}
+
+message GetPublishInfoReq {
+
+}
+message GetPublishInfoResp {
+    message SellerInfo {
+        string seller_id = 1;
+        string seller_name = 2;
+    }
+    message CountryInfo {
+        string country_code = 1;
+        string country_name = 2;
+    }
+
+    common.base.ErrorMessage ret = 1;
+    repeated SellerInfo seller_info = 2; // 店铺列表
+    repeated CountryInfo country_info = 3; // 国家列表
+}
+message GetProductInfoReq {
+
+    string product_id = 1; // 商品ID
+}
+message GetProductInfoResp {
+    message CountryInfo {
+        message SkuInfo {
+            string sku_id = 1; // SKU ID
+            string spec_1 = 2; // 规格1
+            string spec_2 = 3; // 规格2
+            string supply_price = 4; // 供货价
+            string supply_currency_code = 5; // 供货价货币
+            string price = 6; // 销售价
+            string active_price = 7; // 活动价
+            int64 active_start_time = 8; // 活动开始时间 时间戳
+            int64 active_end_time = 9; // 活动结束时间 时间戳
+        }
+        string country_code = 1; // 国家编码
+        string country_name = 2; // 国家名称
+        repeated SkuInfo sku_info = 3; // SKU 信息
+    }
+    common.base.ErrorMessage ret = 1;
+    string product_id = 2; // 商品ID
+    string product_name = 3; // 商品名称
+    repeated CountryInfo country_info = 4; // 国家列表
+
+}
+// 商品
+service LazadaProductService {
+
+    // 商品列表
+    rpc ListProduct (ListProductReq) returns (ListProductResp);
+
+    // 发布商品
+    rpc PublishProduct (PublishProductReq) returns (PublishProductResp);
+
+    // 获取店铺和国家信息
+    rpc GetPublishInfo (GetPublishInfoReq) returns (GetPublishInfoResp);
+
+    // 获取商品价格信息
+    rpc GetProductInfo (GetProductInfoReq) returns (GetProductInfoResp);
+
+    // 保存价格信息
+    rpc UpdateSku (UpdateSkuReq) returns (UpdateSkuResp);
+
+
+}
