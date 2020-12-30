@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖拽</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #main {
+            height: 470px;
+            width: 470px;
+            border: 1px solid #dddddd;
+            position: relative;
+        }
+
+        .item {
+            height: 150px;
+            width: 150px;
+            border: 1px solid #cccccc;
+            /* margin:10px 0 10px 10px; */
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .item1 {
+            background-color: aqua;
+            left: 0;
+            top: 0;
+        }
+
+        .item2 {
+            background-color: red;
+            left: 160px;
+            top: 0;
+        }
+
+        .item3 {
+            background-color: blanchedalmond;
+            left: 320px;
+            top: 0
+        }
+
+        .item4 {
+            background-color: yellowgreen;
+            left: 0;
+            top: 160px;
+        }
+
+        .item5 {
+            background-color: gold;
+            left: 160px;
+            top: 160px;
+        }
+
+        .item6 {
+            background-color: blueviolet;
+            left: 320px;
+            top: 160px;
+        }
+
+        .item7 {
+            background-color: thistle;
+            left: 0;
+            top: 320px;
+        }
+
+        .item8 {
+            background-color: salmon;
+            left: 160px;
+            top: 320px;
+        }
+
+        .item9 {
+            background-color: sienna;
+            left: 320px;
+            top: 320px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div class="item item1">
+            1
+        </div>
+        <div class="item item2">
+            2
+        </div>
+        <div class="item item3">
+            3
+        </div>
+        <div class="item item4">
+            4
+        </div>
+        <div class="item item5">
+            5
+        </div>
+        <div class="item item6">
+            6
+        </div>
+        <div class="item item7">
+            7
+        </div>
+        <div class="item item8">
+            8
+        </div>
+        <div class="item item9">
+            9
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        let domMian = document.getElementById('main')
+        let mainLeft = domMian.offsetWidth
+        let mianTop = domMian.offsetHeight
+        let divItem = document.getElementsByClassName('item')
+        let newLeft, newTop, oldLeft, oldTop
+        let index = 0
+        var arr = []
+        for (let i = 0; i < divItem.length; i++) {
+            divItem[i].onmousedown = function (e) {
+                //每次都要去重新计算arr
+                arr=[]
+                for (let j = 0; j < divItem.length; j++) {
+                    //左 上 右 下
+                    arr.push([divItem[j].offsetLeft, divItem[j].offsetTop, divItem[j].offsetWidth + divItem[j].offsetLeft, divItem[j].offsetHeight + divItem[j].offsetTop])
+                }
+                index = i
+                var e = e || window.event; //兼容ie浏览器 
+                oldLeft = divItem[i].offsetLeft
+                oldTop = divItem[i].offsetTop
+                var diffX = e.clientX - divItem[i].offsetLeft; //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离 
+                var diffY = e.clientY - divItem[i].offsetTop;
+                divItem[i].style.zIndex = 99
+                /*低版本ie bug:物体被拖出浏览器可是窗口外部时，还会出现滚动条， 
+                  解决方法是采用ie浏览器独有的2个方法setCapture()\releaseCapture(),这两个方法， 
+                  可以让鼠标滑动到浏览器外部也可以捕获到事件，而我们的bug就是当鼠标移出浏览器的时候， 
+                  限制超过的功能就失效了。用这个方法，即可解决这个问题。注：这两个方法用于onmousedown和onmouseup中*/
+                if (typeof divItem[i].setCapture != 'undefined') {
+                    divItem[i].setCapture();
+                }
+                document.onmousemove = function (e) {
+                    var e = e || window.event; //兼容ie浏览器 
+                    var left = e.clientX - diffX;
+                    var top = e.clientY - diffY;
+                    //控制拖拽物体的范围只能在main元素视窗内，不允许出现滚动条 
+                    if (left < 0) {
+                        left = 0;
+                    } else if (left > mainLeft - divItem[i].offsetWidth) {
+                        left = mainLeft - divItem[i].offsetWidth;
+                    }
+                    if (top < 0) {
+                        top = 0;
+                    } else if (top > mianTop - divItem[i].offsetHeight) {
+                        top = mianTop - divItem[i].offsetHeight
+                    }
+
+                    //移动时重新得到物体的距离，解决拖动时出现晃动的现象 
+                    divItem[i].style.left = left + 'px';
+                    divItem[i].style.top = top + 'px';
+                    newLeft = left
+                    newTop = top
+                };
+                document.onmouseup = function (e) { //当鼠标弹起来的时候不再移动 
+                    this.onmousemove = null;
+                    this.onmouseup = null; //预防鼠标弹起来后还会循环（即预防鼠标放上去的时候还会移动） 
+                    let newArr = []
+                    var newIndex = 0
+                    //   @碰撞原理
+                    // 主动元素 A 被动元素 B
+                    // A.top < B.bottom 3 &&
+                    // A.left < B.right 2&&
+                    // A.right > B.left 0 &&
+                    // A.bottom > B.top 1
+                    //左 上 右 下 记录碰撞元素的个数
+                    for (let k = 0; k < arr.length; k++) {
+                        if (divItem[i].offsetTop < arr[k][3] && divItem[i].offsetLeft < arr[k][2] && newLeft + divItem[i].offsetWidth > arr[k][0] && newTop + divItem[i].offsetHeight > arr[k][1]) {
+                            let newVal = {
+                                'index': k,
+                                'value': Math.abs(arr[k][0] - newLeft + arr[k][1] - newTop)
+                            }
+                            newArr.push(newVal)
+                        }
+                    }
+                    let minIndex = newArr[0].value
+                    /** 
+                     * @>= 是以免出现相等的情况
+                    */
+                    for (let k = 0; k < newArr.length; k++) {
+                        if (minIndex >= newArr[k].value) {
+                            newIndex = newArr[k].index
+                        }
+                    }
+                    divItem[i].style.left = divItem[newIndex].offsetLeft + 'px'
+                    divItem[i].style.top = divItem[newIndex].offsetTop + 'px'
+                    divItem[newIndex].style.left = oldLeft + 'px'
+                    divItem[newIndex].style.top = oldTop + 'px'
+                    divItem[i].style.zIndex = 0
+                    //修复低版本ie bug 
+                    if (typeof divItem[i].releaseCapture != 'undefined') {
+                        divItem[i].releaseCapture();
+                    }
+                }
+            };
+        }
+    }
+</script>
+
+</html>
