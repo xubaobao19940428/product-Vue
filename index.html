@@ -17,6 +17,8 @@
             height: 100%;
             width: 100%;
             background-color:#cccccc;
+            /* padding:20px;
+            box-sizing: border-box; */
         }
 
         #main {
@@ -59,30 +61,69 @@
         }
     }
     function change(scrollIndex) {
+        //scrollIndex相当于分页的索引
         let divChild = document.getElementsByClassName('obox')
         for (let j = scrollIndex * 100; j < divChild.length; j++) {
             if (j < cloumn) {
+                //第一排
                 divChild[j].style.left = (200 + 10) * j + 'px'
                 divChild[j].style.top = 0
                 arr.push(divChild[j].offsetHeight);
             } else {
-                let minIndex = Math.min.apply(null, arr);
+                //这是为了告诉方便放在第几列下面
+                let minIndex = Math.min.apply(null, arr);//取最小值
                 var index = 0
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i] == minIndex) {
                         index = i
                     }
                 }
+                //将当前索引的元素的top以及left重置为arr最小值
                 divChild[j].style.top = arr[index] + 10 + 'px'
                 divChild[j].style.left = divChild[index].offsetLeft + 'px'
+                //重置arr的最小值
                 arr[index] = arr[index] + divChild[j].offsetHeight + 10
             }
+
         }
     }
     window.onload = function () {
         reload(0)
         change(0)
     }
+    //resize函数
+    function resizeDom(){
+        let divChild = document.getElementsByClassName('obox')
+        for (let j = 0; j < divChild.length; j++) {
+            if (j < cloumn) {
+                //第一排
+                divChild[j].style.left = (200 + 10) * j + 'px'
+                divChild[j].style.top = 0
+                arr.push(divChild[j].offsetHeight);
+            } else {
+                //这是为了告诉方便放在第几列下面
+                let minIndex = Math.min.apply(null, arr);//取最小值
+                var index = 0
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] == minIndex) {
+                        index = i
+                    }
+                }
+                //将当前索引的元素的top以及left重置为arr最小值
+                divChild[j].style.top = arr[index] + 10 + 'px'
+                divChild[j].style.left = divChild[index].offsetLeft + 'px'
+                //重置arr的最小值
+                arr[index] = arr[index] + divChild[j].offsetHeight + 10
+            }
+
+        }
+    }
+    //自动适应屏幕的宽度
+    window.addEventListener('resize',function(){
+        cloumn = parseInt(dom.clientWidth / 200)
+        arr=[]
+        resizeDom()
+    })
     //按需加载//分页的形式也不是懒加载
     dom.addEventListener('scroll', function () {
         let minIndex = Math.min.apply(null, arr);
