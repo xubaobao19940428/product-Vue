@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>cavans点赞动画效果</title>
+    </head>
+    <body>
+        <div>
+            <input type="button" onclick="tapAdd()" >1111</div>
+
+        </div>
+       <canvas  id="thumsCanvas" width="250" height="500" style="width:250px;height:500px;background-color: #f4f4f4;"></canvas>
+    </body>
+    <script>
+        //图标动画类
+        class Ani{
+            constructor(img,x,y,w,h){
+               this.x=x;
+               this.y=y;
+               this.width=w;
+               this.height=h;
+               this.image=img;
+               //随机生成正弦曲线的波动幅度
+               this.step=getRandom(10,30);
+               //随机生成y轴的移动速度
+               this.spite=getRandom(2,6);
+               this.frequency=getRandom(50,100);
+               //小图标透明度
+               this.op=0;
+               //随机曲线类型
+               Math.random()>=0.5?this.type=1:this.type=2;
+               this.dy=0;
+            }
+            draw(context){ 
+               //y轴动画效果
+                this.y-=this.spite;
+               //x轴动画效果 
+                this.dy+=this.spite;
+                let dx=0;
+                //不同的波动方向
+                this.type==1?dx=Math.sin(this.dy/this.frequency):dx=Math.sin(-this.dy/this.frequency);
+                let x=this.x+dx*this.step;  
+                //图像放大动画
+                if(this.width<50){
+                   this.width+=0.5;
+                   this.height+=0.5;
+                }
+                context.drawImage(this.image,x,this.y,this.width,this.height);
+                //图像消失动画，透明度从0-1
+                if(this.y<50){
+                   this.op+=0.05
+                   context.fillStyle = `rgba(255,255,255,${this.op})`;
+                   context.fillRect(x,this.y,this.width,this.height);
+                }
+            }
+        }
+       //小图标动画对象数组
+       let aniList=[];
+       const canvas = document.getElementById('thumsCanvas');
+       let imageList=[];
+       let context = canvas.getContext('2d');
+       //加载图像
+       function loadImage(){
+           const images=[
+               'https://img-blog.csdnimg.cn/img_convert/c5b5771c25c0ae8cbc9166f7f32772c5.png',
+               'https://img-blog.csdnimg.cn/img_convert/ee722a61378bb51c99114c92781743bf.png',
+               'https://img-blog.csdnimg.cn/img_convert/f71eb3071baeb68ced0be6ec60e95973.png',
+               'https://img-blog.csdnimg.cn/img_convert/f71eb3071baeb68ced0be6ec60e95973.png',
+               'https://img-blog.csdnimg.cn/img_convert/01d70bb9af06d18d0d2af7dfae208275.png',
+           ];
+           const promiseList=[];
+           images.forEach(element => {
+               let p=new Promise((resolve)=>{
+                   const img=new Image();
+                   img.onload=resolve.bind(null,img)
+                   img.src=element;
+               })
+               promiseList.push(p)
+           });
+           return new Promise(resolve=>{
+               Promise.all(promiseList).then(imgs=>{                        
+                       this.imageList=imgs;
+                       resolve();
+               })
+           })
+       }
+       //获取随机数
+       function getRandom(min,max){
+           return Math.floor(Math.random()*(max-min))+min
+       }
+       //添加图标
+       function tapAdd(){
+           let image=this.imageList
+           for(let i=0;i<image.length;i++){
+            let ani=new Ani(image[i],250/2-50/2,500-50,20,20)
+                aniList.push(ani)
+           }
+       }
+       //渲染函数
+       function render(){
+           //context.clearRect(0,0,250,500); // clear canvas
+           context.fillStyle = 'rgba(255,255,255,0.5)';
+           context.fillRect(0,0,250,500);
+           aniList.forEach((ani,index)=>{
+               if(ani.y<-50){
+                   ani=null;
+               }else{
+                   ani.draw(context);
+               }
+           })
+           window.requestAnimationFrame(render)
+       }        
+       loadImage().then(()=>{
+                render();
+            });
+    </script>
+</html>

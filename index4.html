@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0 auto;
+            padding: 100px;
+        }
+
+        #move {
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="move">
+        1
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script>
+        var pointA = { // 元素中心点 元素1/2自身宽高 + 元素的定位
+            X: $('#move').width() / 2 + $('#move').offset().left,
+            Y: $('#move').height() / 2 + $('#move').offset().top
+        };
+        var pointB = {};
+        var pointC = {}; // A,B,C分别代表中心点，起始点，结束点坐标
+        // 这里通过鼠标的移动获取起始点和结束点
+        var typeMouse = false;
+
+        var allA = 0; // 存放鼠标旋转总共的度数
+        var count = 0;
+        // 元素跟随鼠标移动旋转
+        $("#move").on('mousedown', function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+
+            typeMouse = true; //获取起始点坐标
+            // if (count < 1) { // 以鼠标第一次落下的点为起点
+                pointB.X = e.pageX;
+                pointB.Y = e.pageY;
+                // count++
+            // }
+            $(document).on('mousemove', function (e) {
+                e.preventDefault()
+                if (typeMouse) {
+                    pointC.X = e.pageX;
+                    pointC.Y = e.pageY; // 获取结束点坐标
+
+                    // 计算出旋转角度
+                    var AB = {};
+                    var AC = {};
+                    AB.X = (pointB.X - pointA.X);
+                    AB.Y = (pointB.Y - pointA.Y);
+                    AC.X = (pointC.X - pointA.X);
+                    AC.Y = (pointC.Y - pointA.Y); // 分别求出AB,AC的向量坐标表示
+                    var direct = (AB.X * AC.Y) - (AB.Y * AC.X); // AB与AC叉乘求出逆时针还是顺时针旋转
+                    var lengthAB = Math.sqrt(Math.pow(pointA.X - pointB.X, 2) +
+                        Math.pow(pointA.Y - pointB.Y, 2)),
+                        lengthAC = Math.sqrt(Math.pow(pointA.X - pointC.X, 2) +
+                            Math.pow(pointA.Y - pointC.Y, 2)),
+                        lengthBC = Math.sqrt(Math.pow(pointB.X - pointC.X, 2) +
+                            Math.pow(pointB.Y - pointC.Y, 2));
+                        var cosA = (Math.pow(lengthAB, 2) + Math.pow(lengthAC, 2) - Math.pow(lengthBC, 2)) /
+                        (2 * lengthAB * lengthAC); //   余弦定理求出旋转角
+                    var angleA = Math.round(Math.acos(cosA) * 180 / Math.PI);
+                    if (direct < 0) {
+                        allA = -angleA; //叉乘结果为负表示逆时针旋转， 逆时针旋转减度数
+                    } else {
+                        allA = angleA; //叉乘结果为正表示顺时针旋转，顺时针旋转加度数
+                    }
+
+                    $('#move').css('transform', 'rotate(' + allA + 'deg)')
+                }
+            });
+        });
+
+        $(document).on('mouseup', function (e) {
+            typeMouse = false;
+        });
+    </script>
+</body>
+
+</html>
