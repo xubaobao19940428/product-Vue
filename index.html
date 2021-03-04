@@ -16,7 +16,7 @@
         body {
             height: 100%;
             width: 100%;
-            background-color:#cccccc;
+            background-color: #cccccc;
             /* padding:20px;
             box-sizing: border-box; */
         }
@@ -31,7 +31,7 @@
         .obox {
             width: 200px;
             position: absolute;
-            border:3px solid #ffffff;
+            border: 3px solid #ffffff;
         }
     </style>
 </head>
@@ -45,6 +45,176 @@
     </div>
 </body>
 <script type="text/javascript">
+//生成一个以字母开头的随机字符串
+var test = /^[a-z]\d/
+console.log(test.test('a11'))
+console.log(test.test('abc'))
+let used = new Set()
+var string=function ramdor(){
+    let result=''
+    let map='abcdefghijklmnopqrstuvwxyz0123456789'
+    result=map[Math.floor(Math.random()*26)]
+    for(let i=0;i<8;i++){
+        result +=map[Math.floor(Math.random()*36)]
+    }
+    if(test.test(result)){
+        if(used.has(result)){
+            return ramdor()
+        }else{
+            used.add(result)
+            return result
+        }
+    }else{
+        return ramdor()
+    }
+}()
+console.log(string)
+    var i = 0
+    function mapArr(start, end, value) {
+        if (i <= 49) {
+            value += start + end
+            i++
+            return mapArr(start+1,end-1,value)
+        }else{
+            return value
+        }
+
+    }
+    var text = mapArr(1,100,0)
+    class MyPromise {
+        constructor(executorCallback) {//执行回调函数
+            let _this = this
+            _this.status = 'pending'//记录状态
+            _this.value = ''//记录返回值
+            _this.onSuccessValue = []//用来记录成功值
+            _this.onFailedValue = []//用来记录失败值
+            function resolveFn(resultes) {
+                let timer = setTimeout(() => {
+                    if (_this.status === 'pending') {
+                        _this.status = 'resolved'
+                        _this.value = resultes
+                        _this.onSuccessValue.forEach(item => item(_this.value))
+                    }
+                    clearTimeout(timer)
+                })
+            }
+            function rejectFn(error) {
+                let timer = setTimeout(() => {
+                    if (_this.status === 'pending') {
+                        _this.status = 'reject'
+                        _this.value = error
+                        _this.onFailedValue.forEach(item => item(_this.value))
+                    }
+                    clearTimeout(timer)
+                })
+            }
+            executorCallback(resolveFn, rejectFn)
+        }
+        then(onFullfiled, onRejected) {
+            if (this.status === 'pending') {
+                this.onSuccessValue.push(onFullfiled) //成功
+                this.onFailedValue.push(onRejected)//失败
+            }
+        }
+    }
+    var myApp = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+            reject(111)
+            resolve(222)
+        }, 1000)
+    })
+    myApp.then(data => {
+        console.log(data)
+        console.log('执行成功')
+    }, error => {
+        console.log(error)
+        console.log('执行失败')
+
+    })
+    //继承
+    function Foo() {
+        this.a = 1
+        this.b = 2
+    }
+    Foo.prototype.c = 3
+    var foo = new Foo
+    //构造函数的prototype的__proto__指向Object
+    //构造函数的prototype的constructor指向构造函数自身
+    //实例对象的原型链指向Object
+    //实例对象原型链的constructor指向构造函数
+    console.log(Foo.prototype)
+    console.log(foo)
+    console.log(foo.__proto__)
+    class Type {
+        constructor() {
+            this.a = 1
+            this.b = 2
+        }
+        getName() {
+            return 'helloWorld'
+        }
+    }
+    class type extends Type {
+        constructor() {
+            super()
+        }
+    }
+    var b = new type();
+    console.log(b.getName())
+    var object = new Object({
+        a: 1,
+        b: 2
+    })
+    console.log(object.hasOwnProperty('constructor'))
+    /**
+     * 
+    */
+    var person = {
+        name: '111',
+        age: [1, 2, 3, 4]
+    }
+    var object = Object.create(person, {
+        name: {
+            configurable: false,
+            value: '222'
+        }
+    })
+    object.name = '3333'
+    console.log(object)
+    var person1 = {
+        name: '222',
+        age: '333'
+    }
+    console.log(person1)
+    var object1 = new Object({
+        name: '111',
+        age: [111, 222, 333]
+    })
+    console.log(object1)
+    function reFilter(arr, arr1) {
+        arr.filter((item) => {
+            if (arr1.indexOf(item) != -1) {
+                return false
+            } else {
+                arr1.push(item)
+                return true
+            }
+        })
+        return arr1
+    }
+    var arr = [1, 2, 3, 3, 2, 3, 456, 4]
+    console.log(reFilter(arr, []))
+    /** 
+     * 瀑布流
+     * 
+    */
+    function arge(type, arr) {
+
+        var newArr = arguments//获取参数以数组形式返回
+        //argu
+        console.log(newArr)
+    }
+    arge(22, [1, 2, 3])
     //瀑布流
     var arr = [];//定义一个数组，用来存储元素的高度
     let dom = document.getElementById('main')
@@ -92,7 +262,7 @@
         change(0)
     }
     //resize函数
-    function resizeDom(){
+    function resizeDom() {
         let divChild = document.getElementsByClassName('obox')
         for (let j = 0; j < divChild.length; j++) {
             if (j < cloumn) {
@@ -119,9 +289,9 @@
         }
     }
     //自动适应屏幕的宽度
-    window.addEventListener('resize',function(){
+    window.addEventListener('resize', function () {
         cloumn = parseInt(dom.clientWidth / 200)
-        arr=[]
+        arr = []
         resizeDom()
     })
     //按需加载//分页的形式也不是懒加载

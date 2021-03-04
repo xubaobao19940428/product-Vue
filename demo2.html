@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>demo-2</title>
+</head>
+<body>
+  <div id="demo-2">demo-2页面</div>
+  <button id="save">保存</button>
+  <script>
+    // 添加点击事件
+    document.getElementById('save').addEventListener('click', () => {
+      console.log(window.opener)
+      window.opener.postMessage({
+        targetOrigin:window.location.origin,
+        name: 'demo2',
+        message: '凯小默保存成功啦啦啦啦！！！！'
+      }, window.location.origin);
+    });
+  </script>
+</body>
+</html>

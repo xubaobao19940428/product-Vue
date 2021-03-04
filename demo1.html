@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>demo-1</title>
+</head>
+<body>
+  <div id="demo-1">demo-1页面</div>
+  <button id="btn">点击跳转到demo-2</button>
+  <script>
+    // 添加点击事件
+    document.getElementById('btn').addEventListener('click', () => {
+      window.open('./demo2.html');
+    });
+    // 监听
+    window.addEventListener('message', event => {
+      // 我们能信任信息来源吗？
+      if (event.origin !== window.location.origin) {
+        alert('我们不能信任信息来源!!!!!')
+        return;
+      }
+      console.log(event);
+      alert(event.data.message)
+    })
+  </script>
+</body>
+</html>
