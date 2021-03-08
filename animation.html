@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes example {
+            0% {
+                background-color: red;
+                left: 0px;
+                top: 0px;
+            }
+
+            25% {
+                background-color: yellow;
+                left: 200px;
+                top: 0px;
+            }
+
+            50% {
+                background-color: blue;
+                left: 200px;
+                top: 200px;
+            }
+
+            75% {
+                background-color: green;
+                left: 0px;
+                top: 200px;
+            }
+
+            100% {
+                background-color: red;
+                left: 0px;
+                top: 0px;
+            }
+        }
+
+        /* 应用动画的元素 */
+        .demo {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            background-color: red;
+            animation-name: example;
+            animation-duration: 4s;
+            animation-timing-function: ease-in;
+            animation-iteration-count:1;
+            animation-direction: reverse;
+        }
+        .scroll_text{
+            width:80%;
+            background:yellow;
+            font-size:20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="demo">
+
+    </div> -->
+    <!-- <marquee behavior=slide>...</marquee>滑动
+    <hr>
+    <marquee behavior=scroll>预设卷动</marquee>预设卷动
+    <hr>
+    <marquee behavior=alternate>来回卷动</marquee>来回卷动
+    <hr>
+    <marquee bgcolor="FF0000">...</marquee> -->
+    <!-- <marquee>...</marquee>普通卷动
+
+<marquee behavior=slide>...</marquee>滑动
+<hr>
+<marquee behavior=scroll class="scroll_text">您好11111111</marquee>预设卷动
+<hr>
+<marquee behavior=alternate>...</marquee>来回卷动
+<hr>
+<marquee direction=down scrollamount=3 height=300>...</marquee>向下卷动
+<hr>
+<marquee direction=up>...</marquee>向上卷动
+<hr>
+<marquee direction=right></marquee>向右卷动
+<hr>
+<marquee direction=left></marquee>向左卷动
+<hr>
+<marquee loop=2>...</marquee>卷动次数
+<hr>
+<marquee width=180>...</marquee>设定宽度
+<hr>
+<marquee height=30>...</marquee>设定高度
+<hr>
+<marquee bgcolor=FF0000>...</marquee>设定背景颜色
+<hr>
+<marquee scrollamount=30>...</marquee>设定滚动速度
+<hr>
+<marquee scrolldelay=300>...</marquee>设定卷动时间
+<hr>
+<marquee οnmοuseοver="this.stop()">...</marquee>鼠标经过上面时停止滚动
+<hr>
+<marquee οnmοuseοver="this.start()">...</marquee>鼠标离开时开始滚动
+
+<!>字体效果
+
+<h1>...</h1>标题字(最大)
+
+<h6>...</h6>标题字(最小)
+
+<b>...粗体字
+
+<strong>...</strong>粗体字(强调) （同上效果略同）
+
+<i>...</i>斜体字
+
+<em>...</em>斜体字(强调)
+
+<dfn>...</dfn>斜体字(表示定义)
+
+<u>...</u>底线
+
+<ins>...</ins>底线(表示插入文字)
+
+<strike>...</strike>横线
+
+<s>...</s>删除线
+
+<del>...</del>删除线(表示删除)
+
+<kbd>...</kbd>键盘文字
+
+<tt>...</tt> 打字体
+
+<xmp>...</xmp>固定宽度字体(在文件中空白、换行、定位功能有效)
+
+<plaintext>...</plaintext>固定宽度字体(不执行标记符号)
+
+<listing>...</listing> 固定宽度小字体
+
+<font color=00ff00>...</font>字体颜色
+
+<font size=1>...</font>最小字体
+
+<font style =’font-size:100 px’>...</font>无限增大
+
+区断标记
+
+<hr>水平线
+
+<hr size=’9’>水平线(设定大小)
+
+<hr width=’80%’>水平线(设定宽度)
+
+<hr color=’ff0000’>水平线(设定颜色)
+
+<br>(换行)
+
+<nobr>...</nobr>水域(不换行)
+
+...
+
+水域(段落)
+
+<center>...</center>置中 -->
+
+
+<!-- <base href=位址>(预设好连结路径)
+
+<a href=位址></a>外部连结
+
+<a href=位址 target=’_blank’></a>外部连结(另开新视窗)
+
+<a href=位址 target=’_top’></a>外部连结(全视窗连结)
+
+<a href=位址 target=’页框名’></a>外部连结(在指定页框连结)
+
+<!>贴图/音乐
+
+<img src=图片位址>贴图
+
+<img src=图片位址 width=’180’>设定图片宽度
+
+<img src=图片位址 height=’30’>设定图片高度
+
+<img src=图片位址 alt=’提示文字’>设定图片提示文字
+
+<img src=图片位址’ border=’1’>设定图片边框
+
+<bgsound src=MID音乐档位址>背景音乐设定
+
+<!>表格语法
+
+<table aling=left>...</table>表格位置,置左
+
+<table aling=center>...</table>表格位置,置中
+
+<table background=图片路径>...</table>背景图片的URL=就是路径网址
+
+<table border=边框大小>...</table>设定表格边框大小(使用数字)
+
+<table bgcolor=颜色码>...</table>设定表格的背景颜色
+
+<table borderclor=颜色码>...</table>设定表格边框的颜色
+
+<table borderclordark=颜色码>...</table>设定表格暗边框的颜色
+
+<table borderclorlight=颜色码>...</table>设定表格亮边框的颜色
+
+<table cellpadding=参数>...</table>指定内容与格线之间的间距(使用数字)
+
+<table cellspacing=参数>...</table>指定格线与格线之间的距离(使用数字)
+
+<table cols=参数>...</table>指定表格的栏数
+
+<table frame=参数>...</table>设定表格外框线的显示方式
+
+<table width=宽度>...</table>指定表格的宽度大小(使用数字)
+
+<table height=高度>...</table>指定表格的高度大小(使用数字)
+
+<td colspan=参数>...</td>指定储存格合并栏的栏数(使用数字)
+
+<td rowspan=参数>...</td>指定储存格合并列的列数(使用数字)
+
+分割视窗
+
+<frameset cols="20%,*">左右分割,将左边框架分割大小为20%右边框架的大小浏览器会自动调整
+
+<frameset rows="20%,*">上下分割,将上面框架分割大小为20%下面框架的大小浏览器会自动调整
+
+<frameset cols="20%,*">分割左右两个框架
+
+<frameset cols="20%,*,20%">分割左中右三个框架 -->
+</body>
+<script type="text/javascript">
+    //给一个数组，给一个基准的数，求数组中两数之和等于基准的两个索引
+    var twoSum = function(nums, target) {
+        const numsMap = {}
+        for (let i = 0; i < nums.length; i++) {
+          const cur = nums[i]
+          if (numsMap[cur] !== undefined) {
+            return [numsMap[cur], i]
+          } else {
+              //这个步骤就是记录每一个数组中的数与target差的值作为numsMap的key，然后去判断numMap中（与target差的值）是否存在，存在即返回
+            const rest = target - cur
+            numsMap[rest] = i
+            // console.log(numsMap)
+          }
+        }
+      }
+      var arr=[2,5,6,10,20,30,7]
+      var target = 9
+      console.log(twoSum(arr,target))
+    //   输入 int 型，返回整数逆序后的字符串。如：输入整型 1234，返回字符串“4321”。(leetCode 相似题 #7)
+    var returnStringNumber = function(number){
+        //判断整数
+        if(Math.ceil(number)!=number){
+            throw new Error('请输入整数')
+        }
+        //  判断是否为负数
+        var flag = number<0 ? '-' : ''
+        //判断是否为10的整数倍
+        while(number%10===0){
+            number = number/10
+        }
+    
+        let result=''
+        while(number>=10){
+            const temp = number % 10
+            result += temp
+            number = parseInt(number / 10)
+            console.log(number)
+        }
+        return flag+result+number
+    }
+    console.log(returnStringNumber(1231))
+</script>
+</html>
