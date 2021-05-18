@@ -1285,9 +1285,11 @@ export default {
       });
     },
     setCoverImg(res) {
+      console.log(res)
       this.supplierDetail.businessQualification = res.data;
     },
     setCoverImg3(res) {
+      console.log(res)
       this.supplierDetail.imageUrl = res.data;
       if (res.data != "") {
         this.hasFmt = true;
@@ -1298,6 +1300,7 @@ export default {
       }
     },
     setCoverImg2(res) {
+      console.log(res)
       this.supplierDetail.cooperativeContract = res.data;
     },
     /**

@@ -237,6 +237,7 @@
                         })
                     }
                     this.fileData = mappedFileList
+                    console.log(this.fileData)
                     this.setSort()
                     this.$emit('setData', {
                         data: arrayToString(this.fileData),

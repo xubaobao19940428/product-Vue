@@ -13,8 +13,8 @@ module.exports = {
             'agent/back/proxystream': {
                 // target: 'https://192.168.31.104:8081'
                 // target: 'http://192.168.31.171:8081'
-                target: 'https://back-dev.fingo.shop/'
-                // target: 'https://back.fingo.shop/'
+                // target: 'https://back-dev.fingo.shop/'
+                target: 'https://back.fingo.shop/'
                 // target: 'https://back-test.fingo.shop'
             },
             'api/proxyboss': {

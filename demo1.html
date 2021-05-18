@@ -9,6 +9,43 @@
   <div id="demo-1">demo-1页面</div>
   <button id="btn">点击跳转到demo-2</button>
   <script>
+    //proxy
+    var proxy = new Proxy({},{
+      get:function (target,propKey,receiver){
+        console.log(target,propKey,`getting ${propKey}!`);
+        return Reflect.get(target, propKey, receiver);
+      },
+      set:function (target,propKey,value,receiver){
+        console.log(target,propKey,value,`setting${value}`)
+        return Reflect.set(target, propKey, value, receiver)
+      }
+    })
+    proxy.count=1
+    ++proxy.count
+    // ES6 原生提供 Proxy 构造函数，用来生成 Proxy 实例。
+    // var obj = new Proxy(target,handler)
+    // Proxy 对象的所有用法，都是上面这种形式，不同的只是handler参数的写法。
+    // 其中，new Proxy()表示生成一个Proxy实例，target参数表示所要拦截的目标对象，
+    // handler参数也是一个对象，用来定制拦截行为。
+    var proxy = new Proxy({}, {
+        get: function(target, propKey) {
+          return 35;
+        }
+      });
+      console.log(proxy.time),
+      console.log(proxy.name),
+      console.log(proxy.title)
+    
+    /*
+    *
+    * 
+    *
+    */
+
+
+
+
+
     // 添加点击事件
     document.getElementById('btn').addEventListener('click', () => {
       window.open('./demo2.html');

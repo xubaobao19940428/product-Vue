@@ -48,13 +48,14 @@
             animation-name: example;
             animation-duration: 4s;
             animation-timing-function: ease-in;
-            animation-iteration-count:1;
+            animation-iteration-count: 1;
             animation-direction: reverse;
         }
-        .scroll_text{
-            width:80%;
-            background:yellow;
-            font-size:20px;
+
+        .scroll_text {
+            width: 80%;
+            background: yellow;
+            font-size: 20px;
         }
     </style>
 </head>
@@ -69,8 +70,8 @@
     <hr>
     <marquee behavior=alternate>来回卷动</marquee>来回卷动
     <hr>
-    <marquee bgcolor="FF0000">...</marquee> -->
-    <!-- <marquee>...</marquee>普通卷动
+    <marquee bgcolor="FF0000">...</marquee>
+    <marquee>...</marquee>普通卷动
 
 <marquee behavior=slide>...</marquee>滑动
 <hr>
@@ -100,9 +101,9 @@
 <hr>
 <marquee οnmοuseοver="this.stop()">...</marquee>鼠标经过上面时停止滚动
 <hr>
-<marquee οnmοuseοver="this.start()">...</marquee>鼠标离开时开始滚动
+<marquee οnmοuseοver="this.start()">...</marquee>鼠标离开时开始滚动 -->
 
-<!>字体效果
+    <!-- <!>字体效果
 
 <h1>...</h1>标题字(最大)
 
@@ -165,7 +166,7 @@
 <center>...</center>置中 -->
 
 
-<!-- <base href=位址>(预设好连结路径)
+    <!-- <base href=位址>(预设好连结路径)
 
 <a href=位址></a>外部连结
 
@@ -234,46 +235,87 @@
 <frameset cols="20%,*,20%">分割左中右三个框架 -->
 </body>
 <script type="text/javascript">
+//类数组
+    var obj = {
+        0: 2,
+        1: 'age',
+        2: 'sex',
+        'length': 3,
+        'splice': Array.prototype.splice,
+        'push': Array.prototype.push
+    }
+    obj.push(1)
+    console.log(obj)
+    // for (var i = 0; i < 5; i++) {
+    //         let index = i
+    //         setTimeout(function() {
+    //             console.log(index)
+    //         }, 1000)
+    // }
     //给一个数组，给一个基准的数，求数组中两数之和等于基准的两个索引
-    var twoSum = function(nums, target) {
+    var twoSum = function (nums, target) {
         const numsMap = {}
         for (let i = 0; i < nums.length; i++) {
-          const cur = nums[i]
-          if (numsMap[cur] !== undefined) {
-            return [numsMap[cur], i]
-          } else {
-              //这个步骤就是记录每一个数组中的数与target差的值作为numsMap的key，然后去判断numMap中（与target差的值）是否存在，存在即返回
-            const rest = target - cur
-            numsMap[rest] = i
-            // console.log(numsMap)
-          }
+            const cur = nums[i]
+            if (numsMap[cur] !== undefined) {
+                return [numsMap[cur], i]
+            } else {
+                //这个步骤就是记录每一个数组中的数与target差的值作为numsMap的key，然后去判断numMap中（与target差的值）是否存在，存在即返回
+                const rest = target - cur
+                numsMap[rest] = i
+                // console.log(numsMap)
+            }
         }
-      }
-      var arr=[2,5,6,10,20,30,7]
-      var target = 9
-      console.log(twoSum(arr,target))
+    }
+    var arr = [2, 5, 6, 10, 20, 30, 7]
+    var target = 9
+    console.log(twoSum(arr, target))
     //   输入 int 型，返回整数逆序后的字符串。如：输入整型 1234，返回字符串“4321”。(leetCode 相似题 #7)
-    var returnStringNumber = function(number){
+    var returnStringNumber = function (number) {
         //判断整数
-        if(Math.ceil(number)!=number){
+        if (Math.ceil(number) != number) {
             throw new Error('请输入整数')
         }
         //  判断是否为负数
-        var flag = number<0 ? '-' : ''
+        var flag = number < 0 ? '-' : ''
         //判断是否为10的整数倍
-        while(number%10===0){
-            number = number/10
+        while (number % 10 === 0) {
+            number = number / 10
         }
-    
-        let result=''
-        while(number>=10){
+
+        let result = ''
+        while (number >= 10) {
             const temp = number % 10
             result += temp
             number = parseInt(number / 10)
             console.log(number)
         }
-        return flag+result+number
+        return flag + result + number
     }
     console.log(returnStringNumber(1231))
+    //判断一个范围内有多少质数
+    function countPrimes(n, k) {
+        var hasMap = {}
+        var count = 0
+        for (let i = n; i <= k; i++) {
+            let returnCount = mapIndexOf(i, k, 0)
+            if (!returnCount) {
+                count++
+                hasMap[i] = true
+            }
+        }
+        return count
+    }
+    function mapIndexOf(i, k, count2) {
+        for (let j = 2; j < i; j++) {
+            if (i % j == 0) {
+                count2++
+            }
+        }
+        return count2
+    }
+    var primeNumber = countPrimes(3, 11)
+    console.log(primeNumber)
 </script>
+
 </html>
