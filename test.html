@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <title></title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script type="text/javascript">
+        var year = 0;
+        //绑定年月
+        function time() {
+            $("#listyymm").empty();
+            var date = new Date();
+            var yy = date.getFullYear() + year;
+            for (var i = 1; i <= 12; i++) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                $("#listyymm").append("<option value='Value'>" + yy + "年" + i + "月</option>");
+            }
+            $('#listyymm')[0].selectedIndex = 0;
+        };
+        //绑定周
+        function week() {
+            var text = $("#txt1").val()
+            var ymd = text.substring(0, 4) + "-" + text.substring(5, 7) + "-1";
+            var week = new Date(Date.parse(ymd.replace(/\-/g, "/")));
+            var w = week.toString().substring(0, 3);
+            var yymm = new Date(text.substring(0, 4), text.substring(5, 7), 0);
+            var day = yymm.getDate();
+            var dd = 1;
+            switch (w) {
+                case "Mon":
+                    dd = 0;
+                    break;
+                case "Tue":
+                    dd = 1;
+                    break;
+                case "Wed":
+                    dd = 2;
+                    break;
+                case "Thu":
+                    dd = 3;
+                    break;
+                case "Fri":
+                    dd = 4;
+                    break;
+                case "Sat":
+                    dd = 5;
+                    break;
+                case "Sun":
+                    dd = 6;
+                    break;
+            }
+            var aw = 5;
+            if (day == 28 && dd == 0) {
+                aw = 4;
+            }
+            var i = 1;
+            $("#dropweek").empty();
+            for (var i = 0; i < aw; i++) {
+                var start = i * 7 + 1 - dd;
+                var end = i * 7 + 7 - dd;
+                if (start < 1) {
+                    start = 1;
+                }
+                if (end > day) {
+                    end = day;
+                }
+                var str = ("第" + (i + 1) + "周 <" + text.substring(5, 7) + "月" + start + "号—" + text.substring(5, 7) + "月" + end + "号>").toString();
+                $("#dropweek").append("<option value='Value'>" + str + "</option>");
+            }
+            $('#dropweek')[0].selectedIndex = 0;
+            var itme = $("#dropweek").find("option:selected").text();
+            $("#txtweek:text").val(itme.toString());
+        }
+        $(function() {
+            //文本框单击事件
+            $("#txt1").click(function() {
+                $("#d1").css("display", "block");
+                var top = ($("#txt1").offset().top);
+                top += 25;
+                var left = $("#txt1").offset().left;
+                $("#d1").css("top", top);
+                $("#d1").css("left", left);
+                time();
+
+            });
+            //确定按钮
+            $("#btnhide").click(function() {
+                var itme = $("#listyymm").find("option:selected").text();
+                $("#txt1:text").val(itme.toString());
+                week();
+                $("#d1").css("display", "none");
+            });
+            //上下一年按钮
+            $("#btndown").click(function() {
+                year += 1;
+                time();
+            });
+            $("#btnup").click(function() {
+                year -= 1;
+                time();
+            });
+            //dropdownonchange
+
+            $("#dropweek").change(function() {
+                var itme = $("#dropweek").find("option:selected").text();
+                $("#txtweek:text").val(itme.toString());
+            });
+
+        });
+    </script>
+    <style type="text/css">
+        .listbox {
+            width: 148px;
+            height: 190px;
+            border: 1px solid #c0c0c0;
+        }
+        
+        .btn {
+            width: 44px;
+            height: 22px;
+            border: 1px solid #c0c0c0;
+            background-color: #f0f0f0;
+        }
+        
+        .dropweek {
+            width: 220px;
+            height: 22px;
+            border: 1px solid #c0c0c0;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <!--时间月份选择框-->
+        <div id="d1" style="display: none; height: 222px; width: 150px; position: absolute">
+            <asp:Panel ID="p1" runat="server" Width="150px" Height="222px" BackColor="#CCCCCC">
+                <div style="width: 100%; height: 30px;">
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <input id="btnup" type="button" class="btn" value="<<" />
+                                <input id="btndown" type="button" value=">>" class="btn" />
+                            </td>
+                            <td style="text-align: right">
+                                <input id="btnhide" type="button" class="btn" value="确定" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="width: 100%; height: 170px;">
+                    <select size="4" name="listyymm" id="listyymm" class="listbox">
+                </select>
+                </div>
+            </asp:Panel>
+        </div>
+        <!-------------------------->
+        <div>
+
+            <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
+            <asp:TextBox ID="txt1" onfocus="this.blur()" runat="server"></asp:TextBox>
+            <div style="display: none">
+                <asp:TextBox ID="txtweek" runat="server"></asp:TextBox>
+            </div>
+            <select name="dropweek" id="dropweek" class="dropweek">
+        </select>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -1,41 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>demo-1</title>
 </head>
+<style>
+  body,
+  html {
+    overflow: hidden;
+  }
+
+  .swiper {
+    width: 375px;
+    height: 150px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+
+  }
+
+  .swiper .swiper_item {
+    width: 375px;
+    height: 150px;
+
+  }
+
+  .swiper .swiper_item img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper .swiper_item_ndicator_list {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper .swiper_item_ndicator_list .swiper_item_ndicator_item {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #cccccc;
+    margin: 0 5px;
+  }
+
+  .swiper .swiper_item_ndicator_list .current {
+    background-color: red;
+  }
+</style>
+
 <body>
-  <div id="demo-1">demo-1页面</div>
-  <button id="btn">点击跳转到demo-2</button>
+  <!-- <div id="demo-1">demo-1页面</div>
+  <button id="btn">点击跳转到demo-2</button> -->
+  <div class="swiper">
+    <div class="swiper-item-list">
+
+      <div class="swiper_item">
+        <img src="https://img.yzcdn.cn/vant/apple-1.jpg" alt="" srcset="">
+      </div>
+      <div class="swiper_item">
+        <img src="https://img.yzcdn.cn/vant/apple-2.jpg" alt="" srcset="">
+      </div>
+      <div class="swiper_item">
+        <img src="https://img.yzcdn.cn/vant/apple-3.jpg" alt="" srcset="">
+      </div>
+      <div class="swiper_item">
+        <img src="https://img.yzcdn.cn/vant/apple-4.jpg" alt="" srcset="">
+      </div>
+
+
+
+
+    </div>
+    <div class="swiper_item_ndicator_list">
+      <div class="swiper_item_ndicator_item">
+
+      </div>
+      <div class="swiper_item_ndicator_item">
+
+      </div>
+      <div class="swiper_item_ndicator_item">
+
+      </div>
+      <div class="swiper_item_ndicator_item">
+
+      </div>
+    </div>
+  </div>
+
   <script>
-    //proxy
-    var proxy = new Proxy({},{
-      get:function (target,propKey,receiver){
-        console.log(target,propKey,`getting ${propKey}!`);
-        return Reflect.get(target, propKey, receiver);
-      },
-      set:function (target,propKey,value,receiver){
-        console.log(target,propKey,value,`setting${value}`)
-        return Reflect.set(target, propKey, value, receiver)
+    var box = document.getElementsByClassName('swiper')[0]
+    var swiper = box.children[0]
+    var swiperIndicator = box.children[1]
+    var timer = null
+    swiperIndicator.children[0].className = 'swiper_item_ndicator_item current'
+    for (let i = 0; i < swiperIndicator.children.length; i++) {
+      let _index = i
+      swiperIndicator.children[i].onclick = function () {
+        swiperIndicator.children[i].classList = "swiper_item_ndicator_item current"
+        if (_index == 0) {
+
+        } else {
+          // let speed = 
+          // timer = setInterval(()=>{
+          swiper.style.transform = `translateX(${375 * i}'px')`
+
+          // },10)
+
+        }
+        for (let j = 0; j < swiperIndicator.children.length; j++) {
+          if (j != _index) {
+            swiperIndicator.children[j].classList = "swiper_item_ndicator_item"
+
+          }
+        }
       }
-    })
-    proxy.count=1
-    ++proxy.count
+    }
+
+    //proxy
+    // var proxy = new Proxy({}, {
+    //   get: function (target, propKey, receiver) {
+    //     console.log(target, propKey, `getting ${propKey}!`);
+    //     return Reflect.get(target, propKey, receiver);
+    //   },
+    //   set: function (target, propKey, value, receiver) {
+    //     console.log(target, propKey, value, `setting${value}`)
+    //     return Reflect.set(target, propKey, value, receiver)
+    //   }
+    // })
+    // proxy.count = 1
+    // ++proxy.count
     // ES6 原生提供 Proxy 构造函数，用来生成 Proxy 实例。
     // var obj = new Proxy(target,handler)
     // Proxy 对象的所有用法，都是上面这种形式，不同的只是handler参数的写法。
     // 其中，new Proxy()表示生成一个Proxy实例，target参数表示所要拦截的目标对象，
     // handler参数也是一个对象，用来定制拦截行为。
-    var proxy = new Proxy({}, {
-        get: function(target, propKey) {
-          return 35;
-        }
-      });
-      console.log(proxy.time),
-      console.log(proxy.name),
-      console.log(proxy.title)
-    
+    // var proxy = new Proxy({}, {
+    //   get: function (target, propKey) {
+    //     return 35;
+    //   }
+    // });
+    // console.log(proxy.time),
+    //   console.log(proxy.name),
+    //   console.log(proxy.title)
+
     /*
     *
     * 
@@ -62,4 +176,5 @@
     })
   </script>
 </body>
+
 </html>

@@ -12,6 +12,7 @@
             background: red;
             position: absolute;
         } */
+        
         html,
         body {
             height: 100%;
@@ -20,39 +21,41 @@
             /* padding:20px;
             box-sizing: border-box; */
         }
-
+        
         #main {
             height: 800px;
             width: 100%;
             overflow-y: scroll;
             position: relative;
         }
-
+        
         .obox {
             width: 200px;
             position: absolute;
             border: 3px solid #ffffff;
         }
-        .a{
-            
-            width:100%;
-            background-color:#fff;
+        
+        .a {
+            width: 100%;
+            background-color: #fff;
             display: flex;
         }
-        .b1{
-           
-            flex:1;
-            background-color:red
+        
+        .b1 {
+            flex: 1;
+            background-color: red
         }
-        .b2{
-            height:200px;
-            flex:1;
-            background-color:blue;
+        
+        .b2 {
+            height: 200px;
+            flex: 1;
+            background-color: blue;
         }
-        .b3{
+        
+        .b3 {
             /* height:100px; */
-            flex:1;
-            background-color:yellow;
+            flex: 1;
+            background-color: yellow;
         }
     </style>
 </head>
@@ -77,49 +80,98 @@
     </div>
 </body>
 <script type="text/javascript">
-//生成一个以字母开头的随机字符串
-var test = /^[a-z]\d/
-console.log(test.test('a11'))
-console.log(test.test('abc'))
-let used = new Set()
-var string=function ramdor(){
-    let result=''
-    let map='abcdefghijklmnopqrstuvwxyz0123456789'
-    result=map[Math.floor(Math.random()*26)]
-    for(let i=0;i<8;i++){
-        result +=map[Math.floor(Math.random()*36)]
-    }
-    if(test.test(result)){
-        if(used.has(result)){
-            return ramdor()
-        }else{
-            used.add(result)
-            return result
+    //生成一个以字母开头的随机字符串
+    var test = /^[a-z]\d/
+    console.log(test.test('a11'))
+    console.log(test.test('abc'))
+    let used = new Set()
+    var string = function ramdor() {
+        let result = ''
+        let map = 'abcdefghijklmnopqrstuvwxyz0123456789'
+        result = map[Math.floor(Math.random() * 26)]
+        for (let i = 0; i < 8; i++) {
+            result += map[Math.floor(Math.random() * 36)]
         }
-    }else{
-        return ramdor()
-    }
-}()
-console.log(string)
+        if (test.test(result)) {
+            if (used.has(result)) {
+                return ramdor()
+            } else {
+                used.add(result)
+                return result
+            }
+        } else {
+            return ramdor()
+        }
+    }()
+    console.log(string)
     var i = 0
+        ///////////////////Promise.all
+    Promise.all = function(promises) {
+        return new Promise((resolve, reject) => {
+            // 参数可以不是数组，但必须具有 Iterator 接口
+            if (typeof promises[Symbol.iterator] !== "function") {
+                reject("Type error");
+            }
+            if (promises.length === 0) {
+                resolve([]);
+            } else {
+                const res = [];
+                let count = 0;
+                const len = promises.length;
+                for (let i = 0; i < len; i++) {
+                    //考虑到 promises[i] 可能是 thenable 对象也可能是普通值
+                    Promise.resolve(promises[i])
+                        .then((data) => {
+                            res[i] = data;
+                            if (++count === len) {
+                                resolve(res);
+                            }
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                }
+            }
+        });
+    }
+    let promises = [
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(2222)
+            })
+        }),
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(333)
+            })
+        }),
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(444)
+            })
+        })
+    ]
+    let data = Promise.all(promises)
+    console.log(data)
+        //////////////////////////
     function mapArr(start, end, value) {
         if (i <= 49) {
             value += start + end
             i++
-            return mapArr(start+1,end-1,value)
-        }else{
+            return mapArr(start + 1, end - 1, value)
+        } else {
             return value
         }
 
     }
-    var text = mapArr(1,100,0)
+    var text = mapArr(1, 100, 0)
     class MyPromise {
-        constructor(executorCallback) {//执行回调函数
+        constructor(executorCallback) { //执行回调函数
             let _this = this
-            _this.status = 'pending'//记录状态
-            _this.value = ''//记录返回值
-            _this.onSuccessValue = []//用来记录成功值
-            _this.onFailedValue = []//用来记录失败值
+            _this.status = 'pending' //记录状态
+            _this.value = '' //记录返回值
+            _this.onSuccessValue = [] //用来记录成功值
+            _this.onFailedValue = [] //用来记录失败值
             function resolveFn(resultes) {
                 let timer = setTimeout(() => {
                     if (_this.status === 'pending') {
@@ -130,6 +182,7 @@ console.log(string)
                     clearTimeout(timer)
                 })
             }
+
             function rejectFn(error) {
                 let timer = setTimeout(() => {
                     if (_this.status === 'pending') {
@@ -145,7 +198,7 @@ console.log(string)
         then(onFullfiled, onRejected) {
             if (this.status === 'pending') {
                 this.onSuccessValue.push(onFullfiled) //成功
-                this.onFailedValue.push(onRejected)//失败
+                this.onFailedValue.push(onRejected) //失败
             }
         }
     }
@@ -156,27 +209,46 @@ console.log(string)
         }, 1000)
     })
     myApp.then(data => {
-        console.log(data)
-        console.log('执行成功')
-    }, error => {
-        console.log(error)
-        console.log('执行失败')
+            console.log(data)
+            console.log('执行成功')
+        }, error => {
+            console.log(error)
+            console.log('执行失败')
 
-    })
-    //继承
+        })
+        //继承
     function Foo() {
         this.a = 1
         this.b = 2
     }
     Foo.prototype.c = 3
     var foo = new Foo
-    //构造函数的prototype的__proto__指向Object
-    //构造函数的prototype的constructor指向构造函数自身
-    //实例对象的原型链指向Object
-    //实例对象原型链的constructor指向构造函数
-    console.log(Foo.prototype)
-    console.log(foo)
-    console.log(foo.__proto__)
+        //构造函数的prototype的__proto__指向Object
+        //构造函数的prototype的constructor指向构造函数自身
+        //实例对象的原型链指向Object
+        //实例对象原型链的constructor指向构造函数
+    console.log('构造函数本省', Foo)
+    console.log('构造函数的原型', Foo.prototype)
+    console.log('构造函数的原型链——————————————', Foo.__proto__)
+    console.log('实例对象的原型————————11111111——————', foo.prototype)
+    console.log('实例对象', foo)
+    console.log('实例对象的原型链', foo.__proto__)
+    console.log('实例对象的原型链与构造函数原型的原型链', (foo.__proto__ === Foo.prototype))
+    class People {
+        constructor() {
+            this.a = 1
+            this.b = 2
+        }
+
+    }
+    class Student extends People {}
+
+    const vortesnail = new Student();
+    console.log('People', People)
+    console.log('People.__proto__', People.__proto__)
+    console.log('People.prototype', People.prototype)
+    console.log('Student.prototype', Student.prototype)
+    console.log('vortesnail._proto_', vortesnail.__proto__, '指向最开始的对象')
     class Type {
         constructor() {
             this.a = 1
@@ -198,9 +270,9 @@ console.log(string)
         b: 2
     })
     console.log(object.hasOwnProperty('constructor'))
-    /**
-     * 
-    */
+        /**
+         * 
+         */
     var person = {
         name: '111',
         age: [1, 2, 3, 4]
@@ -223,6 +295,7 @@ console.log(string)
         age: [111, 222, 333]
     })
     console.log(object1)
+
     function reFilter(arr, arr1) {
         arr.filter((item) => {
             if (arr1.indexOf(item) != -1) {
@@ -236,22 +309,23 @@ console.log(string)
     }
     var arr = [1, 2, 3, 3, 2, 3, 456, 4]
     console.log(reFilter(arr, []))
-    /** 
-     * 瀑布流
-     * 
-    */
+        /** 
+         * 瀑布流
+         * 
+         */
     function arge(type, arr) {
 
-        var newArr = arguments//获取参数以数组形式返回
-        //argu
+        var newArr = arguments //获取参数以数组形式返回
+            //argu
         console.log(newArr)
     }
     arge(22, [1, 2, 3])
-    //瀑布流
-    var arr = [];//定义一个数组，用来存储元素的高度
+        //瀑布流
+    var arr = []; //定义一个数组，用来存储元素的高度
     let dom = document.getElementById('main')
     let cloumn = parseInt(dom.clientWidth / 200)
     var scrollIndex = 0
+
     function reload(index) {
         for (let i = 0; i < 100; i++) {
             let domChild = document.createElement('div')
@@ -262,6 +336,7 @@ console.log(string)
             dom.appendChild(domChild)
         }
     }
+
     function change(scrollIndex) {
         //scrollIndex相当于分页的索引
         let divChild = document.getElementsByClassName('obox')
@@ -273,7 +348,7 @@ console.log(string)
                 arr.push(divChild[j].offsetHeight);
             } else {
                 //这是为了告诉方便放在第几列下面
-                let minIndex = Math.min.apply(null, arr);//取最小值
+                let minIndex = Math.min.apply(null, arr); //取最小值
                 var index = 0
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i] == minIndex) {
@@ -283,17 +358,17 @@ console.log(string)
                 //将当前索引的元素的top以及left重置为arr最小值
                 divChild[j].style.top = arr[index] + 10 + 'px'
                 divChild[j].style.left = divChild[index].offsetLeft + 'px'
-                //重置arr的最小值
+                    //重置arr的最小值
                 arr[index] = arr[index] + divChild[j].offsetHeight + 10
             }
 
         }
     }
-    window.onload = function () {
-        reload(0)
-        change(0)
-    }
-    //resize函数
+    window.onload = function() {
+            reload(0)
+            change(0)
+        }
+        //resize函数
     function resizeDom() {
         let divChild = document.getElementsByClassName('obox')
         for (let j = 0; j < divChild.length; j++) {
@@ -304,7 +379,7 @@ console.log(string)
                 arr.push(divChild[j].offsetHeight);
             } else {
                 //这是为了告诉方便放在第几列下面
-                let minIndex = Math.min.apply(null, arr);//取最小值
+                let minIndex = Math.min.apply(null, arr); //取最小值
                 var index = 0
                 for (var i = 0; i < arr.length; i++) {
                     if (arr[i] == minIndex) {
@@ -314,20 +389,20 @@ console.log(string)
                 //将当前索引的元素的top以及left重置为arr最小值
                 divChild[j].style.top = arr[index] + 10 + 'px'
                 divChild[j].style.left = divChild[index].offsetLeft + 'px'
-                //重置arr的最小值
+                    //重置arr的最小值
                 arr[index] = arr[index] + divChild[j].offsetHeight + 10
             }
 
         }
     }
     //自动适应屏幕的宽度
-    window.addEventListener('resize', function () {
-        cloumn = parseInt(dom.clientWidth / 200)
-        arr = []
-        resizeDom()
-    })
-    //按需加载//分页的形式也不是懒加载
-    dom.addEventListener('scroll', function () {
+    window.addEventListener('resize', function() {
+            cloumn = parseInt(dom.clientWidth / 200)
+            arr = []
+            resizeDom()
+        })
+        //按需加载//分页的形式也不是懒加载
+    dom.addEventListener('scroll', function() {
         let minIndex = Math.min.apply(null, arr);
         if ((dom.scrollTop + dom.clientHeight) - minIndex > 10) {
             scrollIndex++
@@ -354,25 +429,25 @@ console.log(string)
 
     //拖拽
     // window.onload = function () {
-    //     //拖拽功能(主要是触发三个事件：onmousedown\onmousemove\onmouseup) 
+    //     //拖拽功能(主要是触发三个事件：onmousedown\onmousemove\onmouseup)
     //     var drag = document.getElementById('content');
-    //     //点击某物体时，用drag对象即可，move和up是全局区域，也就是整个文档通用，应该使用document对象而不是drag对象(否则，采用drag对象时物体只能往右方或下方移动) 
+    //     //点击某物体时，用drag对象即可，move和up是全局区域，也就是整个文档通用，应该使用document对象而不是drag对象(否则，采用drag对象时物体只能往右方或下方移动)
     //     drag.onmousedown = function (e) {
-    //         var e = e || window.event; //兼容ie浏览器 
-    //         var diffX = e.clientX - drag.offsetLeft; //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离 
+    //         var e = e || window.event; //兼容ie浏览器
+    //         var diffX = e.clientX - drag.offsetLeft; //鼠标点击物体那一刻相对于物体左侧边框的距离=点击时的位置相对于浏览器最左边的距离-物体左边框相对于浏览器最左边的距离
     //         var diffY = e.clientY - drag.offsetTop;
-    //         /*低版本ie bug:物体被拖出浏览器可是窗口外部时，还会出现滚动条， 
-    //           解决方法是采用ie浏览器独有的2个方法setCapture()\releaseCapture(),这两个方法， 
-    //           可以让鼠标滑动到浏览器外部也可以捕获到事件，而我们的bug就是当鼠标移出浏览器的时候， 
+    //         /*低版本ie bug:物体被拖出浏览器可是窗口外部时，还会出现滚动条，
+    //           解决方法是采用ie浏览器独有的2个方法setCapture()\releaseCapture(),这两个方法，
+    //           可以让鼠标滑动到浏览器外部也可以捕获到事件，而我们的bug就是当鼠标移出浏览器的时候，
     //           限制超过的功能就失效了。用这个方法，即可解决这个问题。注：这两个方法用于onmousedown和onmouseup中*/
     //         if (typeof drag.setCapture != 'undefined') {
     //             drag.setCapture();
     //         }
     //         document.onmousemove = function (e) {
-    //             var e = e || window.event; //兼容ie浏览器 
+    //             var e = e || window.event; //兼容ie浏览器
     //             var left = e.clientX - diffX;
     //             var top = e.clientY - diffY;
-    //             //控制拖拽物体的范围只能在浏览器视窗内，不允许出现滚动条 
+    //             //控制拖拽物体的范围只能在浏览器视窗内，不允许出现滚动条
     //             if (left < 0) {
     //                 left = 0;
     //             } else if (left > window.innerWidth - drag.offsetWidth) {
@@ -383,21 +458,20 @@ console.log(string)
     //             } else if (top > window.innerHeight - drag.offsetHeight) {
     //                 top = window.innerHeight - drag.offsetHeight;
     //             }
-    //             //移动时重新得到物体的距离，解决拖动时出现晃动的现象 
+    //             //移动时重新得到物体的距离，解决拖动时出现晃动的现象
     //             drag.style.left= left + 'px';
     //             drag.style.top = top + 'px';
     //         };
-    //         document.onmouseup = function (e) { //当鼠标弹起来的时候不再移动 
+    //         document.onmouseup = function (e) { //当鼠标弹起来的时候不再移动
     //             this.onmousemove = null;
-    //             this.onmouseup = null; //预防鼠标弹起来后还会循环（即预防鼠标放上去的时候还会移动） 
-    //             //修复低版本ie bug 
+    //             this.onmouseup = null; //预防鼠标弹起来后还会循环（即预防鼠标放上去的时候还会移动）
+    //             //修复低版本ie bug
     //             if (typeof drag.releaseCapture != 'undefined') {
     //                 drag.releaseCapture();
     //             }
     //         };
     //     };
     // };
-
 </script>
 
 </html>
