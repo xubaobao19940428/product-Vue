@@ -1,115 +1,290 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head runat="server">
     <title></title>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> -->
     <script type="text/javascript">
-        var year = 0;
-        //绑定年月
-        function time() {
-            $("#listyymm").empty();
-            var date = new Date();
-            var yy = date.getFullYear() + year;
-            for (var i = 1; i <= 12; i++) {
-                if (i < 10) {
-                    i = "0" + i;
+        // var year = 0;
+        // //绑定年月
+        // function time() {
+        //     $("#listyymm").empty();
+        //     var date = new Date();
+        //     var yy = date.getFullYear() + year;
+        //     for (var i = 1; i <= 12; i++) {
+        //         if (i < 10) {
+        //             i = "0" + i;
+        //         }
+        //         $("#listyymm").append("<option value='Value'>" + yy + "年" + i + "月</option>");
+        //     }
+        //     $('#listyymm')[0].selectedIndex = 0;
+        // };
+        // //绑定周
+        // function week() {
+        //     var text = $("#txt1").val()
+        //     var ymd = text.substring(0, 4) + "-" + text.substring(5, 7) + "-1";
+        //     var week = new Date(Date.parse(ymd.replace(/\-/g, "/")));
+        //     var w = week.toString().substring(0, 3);
+        //     var yymm = new Date(text.substring(0, 4), text.substring(5, 7), 0);
+        //     var day = yymm.getDate();
+        //     var dd = 1;
+        //     switch (w) {
+        //         case "Mon":
+        //             dd = 0;
+        //             break;
+        //         case "Tue":
+        //             dd = 1;
+        //             break;
+        //         case "Wed":
+        //             dd = 2;
+        //             break;
+        //         case "Thu":
+        //             dd = 3;
+        //             break;
+        //         case "Fri":
+        //             dd = 4;
+        //             break;
+        //         case "Sat":
+        //             dd = 5;
+        //             break;
+        //         case "Sun":
+        //             dd = 6;
+        //             break;
+        //     }
+        //     var aw = 5;
+        //     if (day == 28 && dd == 0) {
+        //         aw = 4;
+        //     }
+        //     var i = 1;
+        //     $("#dropweek").empty();
+        //     for (var i = 0; i < aw; i++) {
+        //         var start = i * 7 + 1 - dd;
+        //         var end = i * 7 + 7 - dd;
+        //         if (start < 1) {
+        //             start = 1;
+        //         }
+        //         if (end > day) {
+        //             end = day;
+        //         }
+        //         var str = ("第" + (i + 1) + "周 <" + text.substring(5, 7) + "月" + start + "号—" + text.substring(5, 7) + "月" + end + "号>").toString();
+        //         $("#dropweek").append("<option value='Value'>" + str + "</option>");
+        //     }
+        //     $('#dropweek')[0].selectedIndex = 0;
+        //     var itme = $("#dropweek").find("option:selected").text();
+        //     $("#txtweek:text").val(itme.toString());
+        // }
+        // $(function() {
+        //     //文本框单击事件
+        //     $("#txt1").click(function() {
+        //         $("#d1").css("display", "block");
+        //         var top = ($("#txt1").offset().top);
+        //         top += 25;
+        //         var left = $("#txt1").offset().left;
+        //         $("#d1").css("top", top);
+        //         $("#d1").css("left", left);
+        //         time();
+
+        //     });
+        //     //确定按钮
+        //     $("#btnhide").click(function() {
+        //         var itme = $("#listyymm").find("option:selected").text();
+        //         $("#txt1:text").val(itme.toString());
+        //         week();
+        //         $("#d1").css("display", "none");
+        //     });
+        //     //上下一年按钮
+        //     $("#btndown").click(function() {
+        //         year += 1;
+        //         time();
+        //     });
+        //     $("#btnup").click(function() {
+        //         year -= 1;
+        //         time();
+        //     });
+        //     //dropdownonchange
+
+        //     $("#dropweek").change(function() {
+        //         var itme = $("#dropweek").find("option:selected").text();
+        //         $("#txtweek:text").val(itme.toString());
+        //     });
+
+        // });
+        const linkList = (function () {
+            //生成链表中的成员
+            class Node {
+                constructor(element) {
+                    this.element = element;
+                    this.next = null;
                 }
-                $("#listyymm").append("<option value='Value'>" + yy + "年" + i + "月</option>");
             }
-            $('#listyymm')[0].selectedIndex = 0;
-        };
-        //绑定周
-        function week() {
-            var text = $("#txt1").val()
-            var ymd = text.substring(0, 4) + "-" + text.substring(5, 7) + "-1";
-            var week = new Date(Date.parse(ymd.replace(/\-/g, "/")));
-            var w = week.toString().substring(0, 3);
-            var yymm = new Date(text.substring(0, 4), text.substring(5, 7), 0);
-            var day = yymm.getDate();
-            var dd = 1;
-            switch (w) {
-                case "Mon":
-                    dd = 0;
-                    break;
-                case "Tue":
-                    dd = 1;
-                    break;
-                case "Wed":
-                    dd = 2;
-                    break;
-                case "Thu":
-                    dd = 3;
-                    break;
-                case "Fri":
-                    dd = 4;
-                    break;
-                case "Sat":
-                    dd = 5;
-                    break;
-                case "Sun":
-                    dd = 6;
-                    break;
-            }
-            var aw = 5;
-            if (day == 28 && dd == 0) {
-                aw = 4;
-            }
-            var i = 1;
-            $("#dropweek").empty();
-            for (var i = 0; i < aw; i++) {
-                var start = i * 7 + 1 - dd;
-                var end = i * 7 + 7 - dd;
-                if (start < 1) {
-                    start = 1;
+            // 因为链表中的头部位置和长度为私有属性，所以用weakmap
+            let head = new WeakMap();
+            let len = new WeakMap();
+            // 链表操作对象
+            return class linkList {
+                constructor() {
+                    len.set(this, 0);
+                    head.set(this, null);
+                };
+                //在最后增加链表对象
+                append (element) {
+                    const node = new Node(element);
+                    if (this.getHead() === null) {
+                        head.set(this, node);
+                        this.addLen();
+                    } else {
+                        let lastNode = this.getHead();
+                        while (lastNode.next) {
+                            lastNode = lastNode.next;
+                        };
+                        lastNode.next = node;
+                        this.addLen();
+                    }
+                    return this.getHead();
+                };
+                // 在中间插入链表对象
+                insert (position, element) {
+                    let _position = 0;
+                    let node = new Node(element);
+                    let positionNode = this.getHead();
+                    let positionNextNode = null;
+                    //位置大于初始位置且小于最后位置就正常插入
+                    if (position > 0 && position < len.get(this)) {
+                        while (_position !== position) {
+                            _position++;
+                            positionNode = positionNode.next;
+                        };
+                        positionNextNode = positionNode.next;
+                        positionNode.next = node;
+                        node.next = positionNextNode;
+                    };
+                    //如果位置在末尾位置就直接调用append
+                    if (position === len.get(this)) {
+                        this.append(element);
+                    };
+                    //如果位置在初始位置则直接调用unshift
+                    if (position === 0) this.unshift(element);
+                    return this.getHead();
+                };
+                //删除链表对象
+                del (index) {
+                    //index必须为有效的位置
+                    if (index <= len.get(this) && index > 0) {
+                        let position = 0;
+                        let node = this.getHead();
+                        let parentNode = null;
+                        while (position < index + 1) {
+                            position++
+                            parentNode = node;
+                            node = node.next;
+                        }
+                        parentNode.next = node.next;
+                        node.next = null;
+                        len--
+                        return this.getHead();
+                    }
                 }
-                if (end > day) {
-                    end = day;
+                //在链表的头部新增
+                unshift (element) {
+                    let node = new Node(element);
+                    node.next = this.getHead();
+                    head.set(this, node);
+                    return this.getHead();
+                };
+                // 获取链表头部
+                getHead () {
+                    return head.get(this);
+                };
+                // 修改链表的长度变量
+                addLen () {
+                    let l = len.get(this);
+                    l++;
+                    len.set(this, l);
                 }
-                var str = ("第" + (i + 1) + "周 <" + text.substring(5, 7) + "月" + start + "号—" + text.substring(5, 7) + "月" + end + "号>").toString();
-                $("#dropweek").append("<option value='Value'>" + str + "</option>");
             }
-            $('#dropweek')[0].selectedIndex = 0;
-            var itme = $("#dropweek").find("option:selected").text();
-            $("#txtweek:text").val(itme.toString());
+        })();
+        var list = new linkList();
+        list.append(0);
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        list.insert(2, 1.5);
+        list.unshift(-1);
+        list.del(3)
+        let a = {
+            1: {
+                1: 1
+            }
         }
-        $(function() {
-            //文本框单击事件
-            $("#txt1").click(function() {
-                $("#d1").css("display", "block");
-                var top = ($("#txt1").offset().top);
-                top += 25;
-                var left = $("#txt1").offset().left;
-                $("#d1").css("top", top);
-                $("#d1").css("left", left);
-                time();
+        let b = a
+        a = a[1]
+        console.log(a, b)
+        /**
+ * Definition for singly-linked list.
+  
+ */
+        function ListNode (val, next) {
+            this.val = (val === undefined ? 0 : val)
+            this.next = (next === undefined ? null : next)
+        }
+        /**
+         * @param {ListNode} l1
+         * @param {ListNode} l2
+         * @return {ListNode}
+         */
+        var mergeTwoLists = function (l1, l2) {
+            const res = new ListNode(0);
+            let p = res;
+            let p1 = l1;
+            let p2 = l2;
 
-            });
-            //确定按钮
-            $("#btnhide").click(function() {
-                var itme = $("#listyymm").find("option:selected").text();
-                $("#txt1:text").val(itme.toString());
-                week();
-                $("#d1").css("display", "none");
-            });
-            //上下一年按钮
-            $("#btndown").click(function() {
-                year += 1;
-                time();
-            });
-            $("#btnup").click(function() {
-                year -= 1;
-                time();
-            });
-            //dropdownonchange
+            while (p1 && p2) {
+                // console.log(res,p)
+                // debugger
+                if (p1.val < p2.val) {
+                    p.next = p1;
+                    p1 = p1.next;
+                } else {
+                    p.next = p2;
+                    p2 = p2.next
+                }
+                //第一次 res = p 
+                //p = p.next
+                p = p.next
 
-            $("#dropweek").change(function() {
-                var itme = $("#dropweek").find("option:selected").text();
-                $("#txtweek:text").val(itme.toString());
-            });
+            }
 
-        });
+            if (p1) {
+                p.next = p1
+            }
+            if (p2) {
+                p.next = p2
+            }
+            return res.next
+
+        };
+        let arr = mergeTwoLists({
+            val: 1,
+            next: {
+                val: 2,
+                next: {
+                    val: 3,
+                    next: null
+                }
+            }
+        }, {
+            val: 2,
+            next: {
+                val: 3,
+                next: {
+                    val: 4,
+                    next: null
+                }
+            }
+        })
+        console.log(arr)
     </script>
     <style type="text/css">
         .listbox {
@@ -117,14 +292,14 @@
             height: 190px;
             border: 1px solid #c0c0c0;
         }
-        
+
         .btn {
             width: 44px;
             height: 22px;
             border: 1px solid #c0c0c0;
             background-color: #f0f0f0;
         }
-        
+
         .dropweek {
             width: 220px;
             height: 22px;
@@ -153,20 +328,20 @@
                 </div>
                 <div style="width: 100%; height: 170px;">
                     <select size="4" name="listyymm" id="listyymm" class="listbox">
-                </select>
+                    </select>
                 </div>
             </asp:Panel>
         </div>
         <!-------------------------->
         <div>
 
-            <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
+            <asp:Button id="Button1" runat="server" Text="Button" onClick="Button1_Click" />
             <asp:TextBox ID="txt1" onfocus="this.blur()" runat="server"></asp:TextBox>
             <div style="display: none">
                 <asp:TextBox ID="txtweek" runat="server"></asp:TextBox>
             </div>
             <select name="dropweek" id="dropweek" class="dropweek">
-        </select>
+            </select>
         </div>
     </form>
 </body>

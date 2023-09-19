@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 弹幕</title>
+</head>
+
+<body>
+    <div id="canvas-container">
+        <canvas id="myCanvas" width="800" height="400" style="background-color: black;"></canvas>
+    </div>
+    <script>
+        // 弹幕类
+        class Danmu {
+            constructor(canvas, danmuList, text, options = {}) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.danmuList = danmuList;
+                this.text = text;
+                this.x = canvas.width;
+                this.y = this.getAvailableTrack(options.trackHeight || 30);
+                this.speed = options.speed || 2;
+                this.acceleration = options.acceleration || 0.01;
+                this.color = options.color || 'white'; // 添加颜色选项，默认为白色
+            }
+
+            getAvailableTrack (trackHeight) {
+                const existingTracks = this.danmuList.map((danmu) => danmu.y);
+                let track = trackHeight;
+
+                while (existingTracks.includes(track)) {
+                    track += trackHeight;
+                }
+
+                return track;
+            }
+
+            update () {
+                this.x -= this.speed;
+
+                // 使用缓动函数来计算速度变化
+                const progress = (this.canvas.width - this.x) / this.canvas.width;
+                this.x -= this.easeInOutQuad(progress, 0, this.speed, 1);
+
+                return this.x < -this.ctx.measureText(this.text).width;
+            }
+
+            easeInOutQuad (t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+        }
+
+        // 弹幕管理类
+        class DanmuManager {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.danmuList = [];
+            }
+
+            addDanmu (text, options = {}) {
+                const danmu = new Danmu(this.canvas, this.danmuList, text, options);
+                this.danmuList.push(danmu);
+            }
+
+            draw () {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                for (let i = 0; i < this.danmuList.length; i++) {
+                    const danmu = this.danmuList[i];
+                    danmu.x -= danmu.speed;
+
+                    if (danmu.update()) {
+                        this.danmuList.splice(i, 1);
+                        i--;
+                    } else {
+                        this.ctx.font = '16px Arial';
+                        this.ctx.fillStyle = danmu.color; // 设置弹幕颜色
+                        this.ctx.fillText(danmu.text, danmu.x, danmu.y);
+                    }
+                }
+
+                requestAnimationFrame(() => this.draw());
+            }
+        }
+
+        // 初始化
+        const canvas = document.getElementById('myCanvas');
+        const danmuManager = new DanmuManager(canvas);
+
+        // 添加弹幕示例，包括颜色选项
+        // danmuManager.addDanmu('弹幕1', { speed: 1, acceleration: 0.01, color: 'red' }); // 设置颜色为红色
+        // danmuManager.addDanmu('弹幕2', { speed: 1.5, acceleration: 0.01, color: 'green' }); // 设置颜色为绿色
+        // danmuManager.addDanmu('弹幕3', { speed: 2, acceleration: 0.01, color: 'blue' }); // 设置颜色为蓝色
+
+        // 鼠标点击事件监听，添加随机速度弹幕
+        canvas.addEventListener('click', () => {
+            const initialSpeed = Math.random() * 0.5 + 0.5;
+            const acceleration = 0.01;
+            const color = getRandomColor(); // 随机颜色
+            const text = '随机弹幕';
+            danmuManager.addDanmu(text, { speed: initialSpeed, acceleration, color });
+        });
+
+        // 随机生成颜色函数
+        function getRandomColor () {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // 启动弹幕绘制
+        danmuManager.draw();
+
+    </script>
+</body>
+
+</html>

@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>demo-1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo-3</title>
 </head>
+
 <body>
-  <div id="demo-1">demo-3页面</div>
-  <button id="btn">点击跳转到demo-2</button>
-  <script>
-    // 添加点击事件
-    document.getElementById('btn').addEventListener('click', () => {
-      window.open('./demo2.html');
-    });
-    // 监听
-    window.addEventListener('message', event => {
-      // 我们能信任信息来源吗？
-      if (event.origin !== window.location.origin) {
-        alert('我们不能信任信息来源!!!!!')
-        return;
-      }
-      console.log(event);
-      alert(event.data.message)
-    })
-  </script>
+    <div id="demo-1">demo-3页面</div>
+    <button id="btn">点击跳转到demo-2</button>
+    <script>
+        // 添加点击事件
+        //postMessage方式
+        // document.getElementById('btn').addEventListener('click', () => {
+        //     window.open('./demo2.html');
+        // });
+
+        // window.addEventListener('message', event => {
+        //     // 我们能信任信息来源吗？
+        //     if (event.origin !== window.location.origin) {
+        //         alert('我们不能信任信息来源!!!!!')
+        //         return;
+        //     }
+        //     console.log(event);
+        //     alert(event.data.message)
+        // })
+        // const broad = new BroadcastChannel("moment");
+        // let index = 1;
+
+        // broad.onmessage = function (e) {
+        //     console.log(e.data);
+        //     alert(e.data)
+        // };
+
+
+
+
+        //server worker.js
+        // navigator.serviceWorker.register("worker.js").then(() => {
+        //     console.log("注册成功");
+        // });
+
+        // setInterval(() => {
+        //     navigator.serviceWorker.controller.postMessage({
+        //         value: `moment ${new Date()}`,
+        //     });
+        // }, 3000);
+
+        // navigator.serviceWorker.onmessage = function (e) {
+        //     console.log(e.data.value);
+        // }; 
+    </script>
 </body>
+
 </html>

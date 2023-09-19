@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* CSS 样式 */
+        #carousel {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        #carousel .card {
+            flex: 0 0 auto;
+            width: 100%;
+            height: 200px;
+            /* margin-right: 16px; */
+        }
+
+        #carousel .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HTML 结构 -->
+    <div id="carousel">
+        <div class="card">
+            <img src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg" alt="Image 1">
+        </div>
+        <div class="card">
+            <img src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg" alt="Image 2">
+        </div>
+        <div class="card">
+            <img src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg" alt="Image 3">
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript 代码
+        const carousel = document.querySelector('#carousel');
+        const cards = carousel.querySelectorAll('.card');
+
+        let currentIndex = 0;
+        const swipeDistance = 100; // 触发轮播的最小滑动距离
+        let startX = 0;
+        let endX = 0;
+
+        carousel.addEventListener('touchstart', (event) => {
+            startX = event.touches[0].clientX;
+        });
+
+        carousel.addEventListener('touchend', (event) => {
+            endX = event.changedTouches[0].clientX;
+            const distance = Math.abs(startX - endX);
+            if (distance > swipeDistance) {
+                if (startX > endX) {
+                    // 向左滑动，显示下一张卡片
+                    currentIndex = (currentIndex + 1) % cards.length;
+                } else {
+                    // 向右滑动，显示上一张卡片
+                    currentIndex = (currentIndex + cards.length - 1) % cards.length;
+                }
+                updateCards();
+            }
+        });
+
+        function updateCards () {
+            cards.forEach((card, index) => {
+                if (index === currentIndex) {
+                    card.style.transform = 'translateX(0)';
+                } else if (index === (currentIndex + 1) % cards.length) {
+                    card.style.transform = 'translateX(100%)';
+                } else if (index === (currentIndex + cards.length - 1) % cards.length) {
+                    card.style.transform = 'translateX(-100%)';
+                } else {
+                    card.style.transform = 'translateX(-200%)';
+                }
+            });
+        }
+
+        updateCards();
+
+    </script>
+</body>
+
+</html>

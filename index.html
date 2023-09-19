@@ -204,7 +204,7 @@
     }
     var myApp = new MyPromise((resolve, reject) => {
         setTimeout(() => {
-            reject(111)
+            resolve(111)
             resolve(222)
         }, 1000)
     })
@@ -235,13 +235,16 @@
     console.log('实例对象的原型链', foo.__proto__)
     console.log('实例对象的原型链与构造函数原型的原型链', (foo.__proto__ === Foo.prototype))
     class People {
-        constructor() {
-            this.a = 1
-            this.b = 2
+        constructor(a,b) {
+            this.a = a
+            this.b = b
         }
 
     }
-    class Student extends People {}
+    function Student(a,b){
+         People.call(this,a,b)
+    }
+    // class Student extends People {}
 
     const vortesnail = new Student();
     console.log('People', People)
@@ -259,8 +262,8 @@
         }
     }
     class type extends Type {
-        constructor() {
-            super()
+        constructor(props) {
+            super(props)
         }
     }
     var b = new type();
@@ -284,7 +287,7 @@
         }
     })
     object.name = '3333'
-    console.log(object)
+    console.log('object',object.hasOwnProperty('constructor'))
     var person1 = {
         name: '222',
         age: '333'
@@ -319,7 +322,7 @@
             //argu
         console.log(newArr)
     }
-    arge(22, [1, 2, 3])
+    arge({1:1,2:2}, [1, 2, 3])//将参数合并成数组
         //瀑布流
     var arr = []; //定义一个数组，用来存储元素的高度
     let dom = document.getElementById('main')
