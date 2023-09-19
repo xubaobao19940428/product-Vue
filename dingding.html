@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mainHeight: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        #container {
+            position: relative;
+            height: var(--mainHeight);
+            overflow-x: hidden;
+            overflow-y: scroll;
+            background: #040506;
+            scroll-timeline: --homeTimeline y;
+            /* Firefox supports the older "vertical" syntax */
+            scroll-timeline: --homeTimeline vertical;
+        }
+
+        #stretcher {
+            height: calc(2 * var(--mainHeight));
+        }
+
+        main {
+            pointer-events: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: var(--mainHeight);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 500px;
+        }
+
+        .logo {
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            z-index: 2;
+            transform: translateX(-50%);
+            animation-name: logo, logohide;
+            animation-fill-mode: forwards;
+            animation-timeline: --homeTimeline;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            box-shadow: rgba(0, 79, 255, 0.3) 0px 0px 39px 0px, rgba(0, 79, 255, 0.3) 0.26px 26px 77px 0px;
+            overflow: hidden;
+        }
+
+        .logo span {
+            display: block;
+            margin-top: 20px;
+            color: #fff;
+            white-space: nowrap;
+            filter: brightness(100px);
+        }
+
+        @keyframes logo {
+            100% {
+                transform: translate3d(-50%, -120vh, 0) scale(3);
+            }
+        }
+
+        @keyframes logohide {
+            40% {
+                opacity: 1;
+            }
+
+            60%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+
+        .menus {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            width: 855px;
+            padding: 60px 30px;
+            border-radius: 16px;
+            display: flex;
+            row-gap: 60px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            animation-name: menubg;
+            animation-fill-mode: forwards;
+            animation-timeline: --homeTimeline;
+        }
+
+        @keyframes menubg {
+
+            0%,
+            70% {
+                background-color: transparent;
+            }
+
+            to {
+                background-color: rgba(23, 26, 29, .9);
+            }
+        }
+
+        .menu {
+            flex-basis: calc(100% / 7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation-fill-mode: forwards;
+            animation-timeline: --homeTimeline;
+            opacity: 0;
+        }
+
+        .origin {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 1px;
+            height: 1px;
+            border: 1px solid red;
+        }
+
+        .menu img {
+            width: 57px;
+            height: 57px;
+            border-radius: 12px;
+        }
+
+        .menu:nth-of-type(7n + 1),
+        .menu:nth-of-type(7n + 7) {
+            animation-name: menu1;
+        }
+
+        .menu:nth-of-type(7n + 2),
+        .menu:nth-of-type(7n + 6) {
+            animation-name: menu2;
+        }
+
+        .menu:nth-of-type(7n + 3),
+        .menu:nth-of-type(7n + 5) {
+            animation-name: menu3;
+        }
+
+        .menu:nth-of-type(7n + 4) {
+            animation-name: menu4;
+        }
+
+        @keyframes menu1 {
+
+            0%,
+            45% {
+                transform: translate3d(var(--x), var(--y), 10px) scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate3d(0px, 0px, 10px) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes menu2 {
+
+            0%,
+            50% {
+                transform: translate3d(var(--x), var(--y), 10px) scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate3d(0px, 0px, 10px) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes menu3 {
+
+            0%,
+            55% {
+                transform: translate3d(var(--x), var(--y), 10px) scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate3d(0px, 0px, 10px) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes menu4 {
+
+            0%,
+            60% {
+                transform: translate3d(var(--x), var(--y), 10px) scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate3d(0px, 0px, 10px) scale(1);
+                opacity: 1;
+            }
+        }
+
+
+        .blocks {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            z-index: 0;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            animation-name: block;
+            animation-fill-mode: forwards;
+            animation-timeline: --homeTimeline;
+            transform-style: preserve-3d;
+            perspective: 500px;
+        }
+
+        .blocks span {
+            --color: red;
+            --left: 10%;
+            --top: 10%;
+            --z: 0;
+            position: absolute;
+            left: var(--left);
+            top: var(--top);
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: var(--color);
+            transform: translateZ(var(--z));
+        }
+
+        @keyframes block {
+            100% {
+                transform: translate3d(-50%, -500px, 300px);
+                width: 270%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <main>
+            <!-- logo部分 -->
+            <div class="logo">
+                <img src="https://zhengxin-pub.cdn.bcebos.com/financepic/b2f06f9c723e48f30bc6587a48bf9467_fullsize.jpg"
+                    alt=''>
+                <span>代码不止，掘金不停</span>
+            </div>
+
+            <div class="menus">
+                <!-- <div class="origin"></div> -->
+                <div class="menu" style="--x: 341px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: 228px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: 114px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: 0px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: -114px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: -228px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: -341px;--y: 58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+
+                <!-- 第二行 -->
+                <div class="menu" style="--x: 341px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: 228px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: 114px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: 0px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: -114px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: -228px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+                <div class="menu" style="--x: -341px;--y: -58px;">
+                    <img src="https://img.alicdn.com/imgextra/i3/O1CN01TVWH501KYCEaUxPgv_!!6000000001175-0-tps-480-480.jpg"
+                        alt="">
+                </div>
+            </div>
+
+            <!-- 色块部分 -->
+            <div class="blocks">
+                <!-- 左色块 -->
+                <span style="--color:#261758;--left: 26%;--top: 40%;--z: 120px"></span>
+                <span style="--color:#c8940b;--left: 10%;--top: 60%;--z: -50px"></span>
+                <span style="--color:#2059a3;--left: 15%;--top: 100%;--z: -200px"></span>
+                <span style="--color:#562c0e;--left: 5%;--top: 90%;--z: -60px"></span>
+                <!-- 上色块 -->
+                <span style="--color:#051235;--left: 50%;--top: 40%;--z: 20px"></span>
+                <span style="--color:#17113a;--left: 40%;--top: 30%;--z: -40px"></span>
+                <span style="--color:#06143a;--left: 45%;--top: 70%;--z: -250px"></span>
+
+                <!-- 右色块 -->
+                <span style="--color:#072e90;--left: 70%;--top: 40%;--z: 100px"></span>
+                <span style="--color:#0ca15b;--left: 80%;--top: 60%;--z: -50px"></span>
+                <span style="--color:#479ec8;--left: 76%;--top: 70%;--z: 50px"></span>
+
+                <!-- 下色块 -->
+                <span style="--color:#072e90;--left: 75%;--top: 150%;--z: -300px"></span>
+                <span style="--color:#061640;--left: 30%;--top: 125%;--z: -200px"></span>
+            </div>
+        </main>
+        <div id="stretcher"></div>
+    </div>
+</body>
+
+</html>
